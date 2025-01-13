@@ -5,22 +5,15 @@ import torch
 import json
 from flask_cors import CORS
 from datetime import datetime
-from openai import OpenAI
-from dotenv import load_dotenv
 import asyncio
 import os
 
-# Load environment variables from .env file
-load_dotenv()
 
-# Initialize OpenAI client
-client = OpenAI()
 
-# Configure model name from environment variables, default to GPT-4
-MODEL_NAME = os.getenv("OPENAI_MODEL", "gpt-4")
+
 
 # Initialize Flask application
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Enable CORS for all routes and origins
 CORS(app, resources={r"/": {"origins": ""}})
@@ -202,5 +195,5 @@ def save_feedback():
             'message': str(e)
         }), 500
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
