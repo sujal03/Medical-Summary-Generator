@@ -9,9 +9,6 @@ import asyncio
 import os
 
 
-
-
-
 # Initialize Flask application
 app = Flask(__name__)
 
@@ -66,6 +63,7 @@ def generate_llama_summary(user_input):
         num_return_sequences=1,
         eos_token_id=tokenizer.eos_token_id,
         max_length=200,
+        truncation=True
     )
     return sequences[0]['generated_text']
 
@@ -99,13 +97,13 @@ def home():
     Render the main application page.
     
     Returns:
-        HTML: Rendered index.html template
+        str: Welcome message
         
     Technical details:
     - Flask route for root URL
-    - Uses Flask's render_template function
+    - Returns a simple welcome text
     """
-    return render_template('index.html')
+    return "Welcome to the Medical Summary Generator API"
 
 @app.route('/summary', methods=['GET'])
 async def get_summary():
@@ -142,8 +140,9 @@ async def get_summary():
     except Exception as e:
         return jsonify({
             'status': 'error',
-            'message': str(e)
+            'message': f'Error generating summary: {str(e)}'
         }), 500
+
 
 @app.route('/ratings', methods=['POST'])
 def save_feedback():
